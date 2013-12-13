@@ -66,6 +66,7 @@ find $KERNEL_DIR -name '*.ko' -exec cp -v {} $MODULES_DIR \;
 find $MODULES_DIR -name '*.ko' -exec cp -v {} $CWM_DIR"system/lib/modules/" \;
 cd $KERNEL_DIR
 
+echo
 if [ -e $KERNEL_DIR/arch/arm/boot/zImage ]; then
 	cp arch/arm/boot/zImage $CWM_ANY_DIR/
 	cd $CWM_ANY_DIR/
