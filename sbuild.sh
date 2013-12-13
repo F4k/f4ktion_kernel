@@ -45,6 +45,7 @@ CWM_DIR=$HOME_DIR/filesdir/cwm/
 CWM_ANY_DIR=$HOME_DIR/filesdir/cwm_any/
 
 echo "Remove old kernel"
+rm $CWM_DIR/boot.img
 rm $CWM_ANY_DIR/zImage
 rm arch/arm/boot/zImage
 
@@ -65,14 +66,19 @@ find $KERNEL_DIR -name '*.ko' -exec cp -v {} $MODULES_DIR \;
 find $MODULES_DIR -name '*.ko' -exec cp -v {} $CWM_DIR"system/lib/modules/" \;
 cd $KERNEL_DIR
 
-cp arch/arm/boot/zImage $CWM_ANY_DIR/
-cd $CWM_ANY_DIR/
-./mkbootfs $INIT_DIR| gzip > $CWM_ANY_DIR/ramdisk.gz
-./mkbootimg --cmdline 'console = null androidboot.hardware=qcom user_debug=31 zcache' --kernel $CWM_ANY_DIR/zImage --ramdisk $CWM_ANY_DIR/ramdisk.gz --base 0x80200000 --pagesize 2048 --ramdisk_offset 0x02000000 --output $CWM_DIR/boot.img
+if [ -e $KERNEL_DIR/arch/arm/boot/zImage ]; then
+	cp arch/arm/boot/zImage $CWM_ANY_DIR/
+	cd $CWM_ANY_DIR/
+	echo "Make boot.img"
+	./mkbootfs $INIT_DIR| gzip > $CWM_ANY_DIR/ramdisk.gz
+	./mkbootimg --cmdline 'console = null androidboot.hardware=qcom user_debug=31 zcache' --kernel $CWM_ANY_DIR/zImage --ramdisk $CWM_ANY_DIR/ramdisk.gz --base 0x80200000 --pagesize 2048 --ramdisk_offset 0x02000000 --output $CWM_DIR/boot.img
 
-cd $CWM_DIR
-zip -r `echo $F4K_VER`.zip *
-mv  `echo $F4K_VER`.zip $OUTPUT_DIR/$VARIANT
+	cd $CWM_DIR
+	zip -r `echo $F4K_VER`.zip *
+	mv  `echo $F4K_VER`.zip $OUTPUT_DIR/$VARIANT
+else
+	echo "KERNEL DID NOT BUILD! no zImage exist"
+fi;
 
 DATE_END=$(date +"%s")
 echo
