@@ -3,12 +3,12 @@
 BASE_F4K_VER="f4ktion_1.1.2"
 
 case "$1" in
-        3gxx)
+        eur_3g)
             VARIANT="eur_3g"
             VER=""
             ;;
 
-        ltexx)
+        eur_lte)
             VARIANT="eur_lte"
             VER=""
             ;;
