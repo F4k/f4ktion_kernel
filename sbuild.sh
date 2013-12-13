@@ -45,7 +45,7 @@ CWM_DIR=$HOME_DIR/filesdir/cwm/
 CWM_ANY_DIR=$HOME_DIR/filesdir/cwm_any/
 
 echo "Remove old kernel"
-rm $CWM_ANY_DIR/kernel/zImage
+rm $CWM_ANY_DIR/zImage
 rm arch/arm/boot/zImage
 
 echo "LOCALVERSION="$LOCALVERSION
@@ -61,15 +61,14 @@ echo "CWN_ANY_DIR="$CWM_ANY_DIR
 make -j4 > /dev/null
 
 rm `echo $MODULES_DIR"/*"`
-rm `echo $CWM_ANY_DIR"system/lib/modules/*"`
 find $KERNEL_DIR -name '*.ko' -exec cp -v {} $MODULES_DIR \;
 find $MODULES_DIR -name '*.ko' -exec cp -v {} $CWM_DIR"system/lib/modules/" \;
 cd  $KERNEL_DIR
 
-cp arch/arm/boot/zImage $CWM_ANY_DIR/kernel/
-cd $CWM_ANY_DIR/kernel/
-./mkbootfs $INIT_DIR| gzip > $CWM_ANY_DIR/kernel/ramdisk.gz
-./mkbootimg --cmdline 'console = null androidboot.hardware=qcom user_debug=31 zcache' --kernel $CWM_ANY_DIR/kernel/zImage --ramdisk $CWM_ANY_DIR/kernel/ramdisk.gz --base 0x80200000 --pagesize 2048 --ramdisk_offset 0x02000000 --output $CWM_DIR/boot.img
+cp arch/arm/boot/zImage $CWM_ANY_DIR/
+cd $CWM_ANY_DIR/
+./mkbootfs $INIT_DIR| gzip > $CWM_ANY_DIR/ramdisk.gz
+./mkbootimg --cmdline 'console = null androidboot.hardware=qcom user_debug=31 zcache' --kernel $CWM_ANY_DIR/zImage --ramdisk $CWM_ANY_DIR/ramdisk.gz --base 0x80200000 --pagesize 2048 --ramdisk_offset 0x02000000 --output $CWM_DIR/boot.img
 
 cd $CWM_DIR
 zip -r `echo $F4K_VER`.zip *
