@@ -63,7 +63,7 @@ make -j4 > /dev/null
 rm `echo $MODULES_DIR"/*"`
 find $KERNEL_DIR -name '*.ko' -exec cp -v {} $MODULES_DIR \;
 find $MODULES_DIR -name '*.ko' -exec cp -v {} $CWM_DIR"system/lib/modules/" \;
-cd  $KERNEL_DIR
+cd $KERNEL_DIR
 
 cp arch/arm/boot/zImage $CWM_ANY_DIR/
 cd $CWM_ANY_DIR/
