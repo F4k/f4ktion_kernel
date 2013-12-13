@@ -482,7 +482,11 @@ flush_signal_handlers(struct task_struct *t, int force_default)
 		if (force_default || ka->sa.sa_handler != SIG_IGN)
 			ka->sa.sa_handler = SIG_DFL;
 		ka->sa.sa_flags = 0;
+<<<<<<< HEAD
 #ifdef __ARCH_HAS_SA_RESTORER
+=======
+#ifdef SA_RESTORER
+>>>>>>> 7e1a9a1... Linux 3.4.37
 		ka->sa.sa_restorer = NULL;
 #endif
 		sigemptyset(&ka->sa.sa_mask);
