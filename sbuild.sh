@@ -18,7 +18,9 @@ case "$1" in
             VER=""
 esac
 
-BASE_F4K_VER=$BASE_F4K_VER-$VARIANT
+if [ "$2" = "JB" ] ; then
+	BASE_F4K_VER=$BASE_F4K_VER-$VARIANT"-JB"
+fi
 
 F4K_VER=$BASE_F4K_VER$VER
 
@@ -59,6 +61,12 @@ echo "OUTPUT_DIR="$OUTPUT_DIR
 echo "CWM_DIR="$CWM_DIR
 echo "CWN_ANY_DIR="$CWM_ANY_DIR
 
+if [ "$2" = "JB" ] ; then
+        cd $HOME_DIR/ramdisks/ && git checkout jb-4.3
+fi
+
+cd $KERNEL_DIR
+
 make -j4 > /dev/null
 
 rm `echo $MODULES_DIR"/*"`
@@ -80,6 +88,13 @@ if [ -e $KERNEL_DIR/arch/arm/boot/zImage ]; then
 else
 	echo "KERNEL DID NOT BUILD! no zImage exist"
 fi;
+
+echo
+if [ "$2" = "JB" ] ; then
+        cd $HOME_DIR/ramdisks/ && git checkout kk-4.4
+fi
+
+cd $KERNEL_DIR
 
 DATE_END=$(date +"%s")
 echo
