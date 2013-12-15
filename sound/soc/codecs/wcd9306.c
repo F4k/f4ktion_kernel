@@ -4403,6 +4403,11 @@ static void tapan_codec_init_reg(struct snd_soc_codec *codec)
 static struct wcd9xxx_reg_address tapan_reg_address = {
 };
 
+#ifdef CONFIG_SOUND_CONTROL_HAX_GPL
+struct snd_kcontrol_new *gpl_faux_snd_controls_ptr =
+	(struct snd_kcontrol_new *)tapan_snd_controls;
+#endif
+
 static int tapan_codec_probe(struct snd_soc_codec *codec)
 {
 	struct wcd9xxx *control;
