@@ -2956,7 +2956,10 @@ static int tapan_volatile(struct snd_soc_codec *ssc, unsigned int reg)
 }
 
 #define TAPAN_FORMATS (SNDRV_PCM_FMTBIT_S16_LE)
-static int tapan_write(struct snd_soc_codec *codec, unsigned int reg,
+#ifndef CONFIG_SOUND_CONTROL_HAX_GPL
++static
++#endif
++int tapan_write(struct snd_soc_codec *codec, unsigned int reg,
 	unsigned int value)
 {
 	int ret;
@@ -2975,7 +2978,14 @@ static int tapan_write(struct snd_soc_codec *codec, unsigned int reg,
 
 	return wcd9xxx_reg_write(codec->control_data, reg, value);
 }
-static unsigned int tapan_read(struct snd_soc_codec *codec,
+#ifdef CONFIG_SOUND_CONTROL_HAX_GPL
+EXPORT_SYMBOL(tapan_write);
+#endif
+
+#ifndef CONFIG_SOUND_CONTROL_HAX_GPL
+static
+#endif
+unsigned int tapan_read(struct snd_soc_codec *codec,
 				unsigned int reg)
 {
 	unsigned int val;
@@ -2999,6 +3009,9 @@ static unsigned int tapan_read(struct snd_soc_codec *codec,
 	val = wcd9xxx_reg_read(codec->control_data, reg);
 	return val;
 }
+#ifdef CONFIG_SOUND_CONTROL_HAX_GPL
+EXPORT_SYMBOL(tapan_read);
+#endif
 
 static int tapan_startup(struct snd_pcm_substream *substream,
 		struct snd_soc_dai *dai)
@@ -4524,6 +4537,8 @@ static struct wcd9xxx_reg_address tapan_reg_address = {
 #ifdef CONFIG_SOUND_CONTROL_HAX_GPL
 struct snd_kcontrol_new *gpl_faux_snd_controls_ptr =
 	(struct snd_kcontrol_new *)tapan_snd_controls;
+struct snd_soc_codec *fauxsound_codec_ptr;
+EXPORT_SYMBOL(fauxsound_codec_ptr);
 #endif
 
 static int tapan_codec_probe(struct snd_soc_codec *codec)
@@ -4537,12 +4552,18 @@ static int tapan_codec_probe(struct snd_soc_codec *codec)
 	int i;
 	void *ptr = NULL;
 
+#ifdef CONFIG_SOUND_CONTROL_HAX_GPL
+	pr_info("tapan codec probe...\n");
+	fauxsound_codec_ptr = codec;
+#endif
+
 	codec->control_data = dev_get_drvdata(codec->dev->parent);
 	control = codec->control_data;
 
 	dev_info(codec->dev, "%s()\n", __func__);
 
 	tapan = kzalloc(sizeof(struct tapan_priv), GFP_KERNEL);
+
 	if (!tapan) {
 		dev_err(codec->dev, "Failed to allocate private data\n");
 		return -ENOMEM;
