@@ -18,8 +18,10 @@ case "$1" in
             VER=""
 esac
 
-if [ "$2" = "JB" ] ; then
-	BASE_F4K_VER=$BASE_F4K_VER-$VARIANT"-JB"
+BASE_F4K_VER=$BASE_F4K_VER-$VARIANT
+
+if [ "$2" = "jb" ] ; then
+	BASE_F4K_VER=$BASE_F4K_VER"-JB"
 fi
 
 F4K_VER=$BASE_F4K_VER$VER
@@ -46,11 +48,13 @@ OUTPUT_DIR=$HOME_DIR/output/
 CWM_DIR=$HOME_DIR/filesdir/cwm/
 CWM_ANY_DIR=$HOME_DIR/filesdir/cwm_any/
 
-echo "Remove old kernel"
+echo
+echo "Remove old kernels"
 rm $CWM_DIR/boot.img
 rm $CWM_ANY_DIR/zImage
 rm arch/arm/boot/zImage
 
+echo
 echo "LOCALVERSION="$LOCALVERSION
 echo "CROSS_COMPILE="$CROSS_COMPILE
 echo "ARCH="$ARCH
@@ -61,7 +65,8 @@ echo "OUTPUT_DIR="$OUTPUT_DIR
 echo "CWM_DIR="$CWM_DIR
 echo "CWN_ANY_DIR="$CWM_ANY_DIR
 
-if [ "$2" = "JB" ] ; then
+echo
+if [ "$2" = "jb" ] ; then
         cd $HOME_DIR/ramdisks/ && git checkout jb-4.3
 fi
 
@@ -69,6 +74,7 @@ cd $KERNEL_DIR
 
 make -j4 > /dev/null
 
+echo
 rm `echo $MODULES_DIR"/*"`
 find $KERNEL_DIR -name '*.ko' -exec cp -v {} $MODULES_DIR \;
 find $MODULES_DIR -name '*.ko' -exec cp -v {} $CWM_DIR"system/lib/modules/" \;
@@ -90,7 +96,7 @@ else
 fi;
 
 echo
-if [ "$2" = "JB" ] ; then
+if [ "$2" = "jb" ] ; then
         cd $HOME_DIR/ramdisks/ && git checkout kk-4.4
 fi
 
