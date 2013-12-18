@@ -782,6 +782,12 @@ config TIMA_LOG
 	help
 	  This option enables support for dumping TIMA log
 
+config TIMA_TEST
+	tristate "Tima Test Suite"
+	default n
+	help
+	  This option enables kernel component of tima test suite
+
 config GENERIC_BLN
         bool "Generic BLN support for backlight notification"
         depends on SYSFS && EXPERIMENTAL
