@@ -45,7 +45,7 @@
 * towards the ideal frequency and slower after it has passed it. Similarly,
 * lowering the frequency towards the ideal frequency is faster than below it.
 */
-#define DEFAULT_AWAKE_IDEAL_FREQ 1350000
+#define DEFAULT_AWAKE_IDEAL_FREQ (1350*1000)
 static unsigned int awake_ideal_freq;
 
 /*
@@ -54,7 +54,7 @@ static unsigned int awake_ideal_freq;
 * that practically when sleep_ideal_freq==0 the awake_ideal_freq is used
 * also when suspended).
 */
-#define DEFAULT_SLEEP_IDEAL_FREQ 384000
+#define DEFAULT_SLEEP_IDEAL_FREQ (384*1000)
 static unsigned int sleep_ideal_freq;
 
 /*
@@ -62,7 +62,7 @@ static unsigned int sleep_ideal_freq;
 * Zero disables and causes to always jump straight to max frequency.
 * When below the ideal freqeuncy we always ramp up to the ideal freq.
 */
-#define DEFAULT_RAMP_UP_STEP 810000
+#define DEFAULT_RAMP_UP_STEP (810*1000)
 static unsigned int ramp_up_step;
 
 /*
@@ -70,7 +70,7 @@ static unsigned int ramp_up_step;
 * Zero disables and will calculate ramp down according to load heuristic.
 * When above the ideal freqeuncy we always ramp down to the ideal freq.
 */
-#define DEFAULT_RAMP_DOWN_STEP 384000
+#define DEFAULT_RAMP_DOWN_STEP (384*1000)
 static unsigned int ramp_down_step;
 
 /*
@@ -111,7 +111,6 @@ static unsigned int sleep_wakeup_freq;
 */
 #define DEFAULT_SAMPLE_RATE_JIFFIES 2
 static unsigned int sample_rate_jiffies;
-
 
 /*************** End of tunables ***************/
 
@@ -499,7 +498,6 @@ static ssize_t store_debug_mask(struct kobject *kobj, struct attribute *attr, co
         res = strict_strtoul(buf, 0, &input);
         if (res >= 0)
                 debug_mask = input;
-        else return -EINVAL;
         return count;
 }
 
@@ -515,7 +513,6 @@ static ssize_t store_up_rate_us(struct kobject *kobj, struct attribute *attr, co
         res = strict_strtoul(buf, 0, &input);
         if (res >= 0 && input >= 0 && input <= 100000000)
                 up_rate_us = input;
-        else return -EINVAL;
         return count;
 }
 
@@ -531,7 +528,6 @@ static ssize_t store_down_rate_us(struct kobject *kobj, struct attribute *attr, 
         res = strict_strtoul(buf, 0, &input);
         if (res >= 0 && input >= 0 && input <= 100000000)
                 down_rate_us = input;
-        else return -EINVAL;
         return count;
 }
 
@@ -550,7 +546,6 @@ static ssize_t store_sleep_ideal_freq(struct kobject *kobj, struct attribute *at
                 if (suspended)
                         smartass_update_min_max_allcpus();
         }
-        else return -EINVAL;
         return count;
 }
 
@@ -566,7 +561,6 @@ static ssize_t store_sleep_wakeup_freq(struct kobject *kobj, struct attribute *a
         res = strict_strtoul(buf, 0, &input);
         if (res >= 0 && input >= 0)
                 sleep_wakeup_freq = input;
-        else return -EINVAL;
         return count;
 }
 
@@ -585,7 +579,6 @@ static ssize_t store_awake_ideal_freq(struct kobject *kobj, struct attribute *at
                 if (!suspended)
                         smartass_update_min_max_allcpus();
         }
-        else return -EINVAL;
         return count;
 }
 
@@ -601,7 +594,6 @@ static ssize_t store_sample_rate_jiffies(struct kobject *kobj, struct attribute 
         res = strict_strtoul(buf, 0, &input);
         if (res >= 0 && input > 0 && input <= 1000)
                 sample_rate_jiffies = input;
-        else return -EINVAL;
         return count;
 }
 
@@ -617,7 +609,6 @@ static ssize_t store_ramp_up_step(struct kobject *kobj, struct attribute *attr, 
         res = strict_strtoul(buf, 0, &input);
         if (res >= 0 && input >= 0)
                 ramp_up_step = input;
-        else return -EINVAL;
         return count;
 }
 
@@ -633,7 +624,6 @@ static ssize_t store_ramp_down_step(struct kobject *kobj, struct attribute *attr
         res = strict_strtoul(buf, 0, &input);
         if (res >= 0 && input >= 0)
                 ramp_down_step = input;
-        else return -EINVAL;
         return count;
 }
 
@@ -649,7 +639,6 @@ static ssize_t store_max_cpu_load(struct kobject *kobj, struct attribute *attr, 
         res = strict_strtoul(buf, 0, &input);
         if (res >= 0 && input > 0 && input <= 100)
                 max_cpu_load = input;
-        else return -EINVAL;
         return count;
 }
 
@@ -665,7 +654,6 @@ static ssize_t store_min_cpu_load(struct kobject *kobj, struct attribute *attr, 
         res = strict_strtoul(buf, 0, &input);
         if (res >= 0 && input > 0 && input < 100)
                 min_cpu_load = input;
-        else return -EINVAL;
         return count;
 }
 
