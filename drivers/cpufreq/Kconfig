@@ -107,12 +107,11 @@ config CPU_FREQ_DEFAULT_GOV_LIONHEART
 	  Use the CPUFreq governor 'Lionheart' as default.
 
 
-config CPU_FREQ_DEFAULT_GOV_LULZACTIVE
-	bool "lulzactive"
-	select CPU_FREQ_GOV_LULZACTIVE
-	select CPU_FREQ_GOV_PERFORMANCE
+config CPU_FREQ_DEFAULT_GOV_SMARTASSH3
+	bool "smartassH3"
+	select CPU_FREQ_GOV_SMARTASSH3
 	help
-	  Use the CPUFreq governor 'lulzactive' as default.
+	  Use the CPUFreq governor 'smartassH3' as default.
 
 config CPU_FREQ_DEFAULT_GOV_SMARTASS2
 	bool "smartass2"
@@ -209,13 +208,11 @@ config CPU_FREQ_GOV_LIONHEART
         help
          'Lionheart' - A brave and agile conservative-based governor.
 
-config CPU_FREQ_GOV_LULZACTIVE
-	tristate "'lulzactive' cpufreq governor"
+config CPU_FREQ_GOV_SMARTASSH3
+	tristate "'smartassH3' cpufreq governor"
 	depends on CPU_FREQ
 	help
-	  'lulzactive' - a new interactive governor by Tegrak!
-	  For more information please visit:
-	  http://tegrak2x.blogspot.com/2011/11/lulzactive-governor-v2.html
+	  'smartassH3' - a "smart" governor
 
 	  If in doubt, say N.
 
