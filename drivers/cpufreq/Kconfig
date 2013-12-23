@@ -127,6 +127,13 @@ config CPU_FREQ_DEFAULT_GOV_SMARTASSH3
  	help
 	  Use the CPUFreq governor 'smartassH3' as default.
 
+config CPU_FREQ_DEFAULT_GOV_WHEATLEY
+	bool "wheatley"
+	select CPU_FREQ_GOV_WHEATLEY
+	select CPU_FREQ_GOV_PERFORMANCE
+	help
+	  Use the CPUFreq governor 'wheatley' as default.
+
 endchoice
 
 config CPU_FREQ_GOV_PERFORMANCE
@@ -220,6 +227,14 @@ config CPU_FREQ_GOV_SMARTASSH3
  	depends on CPU_FREQ
  	help
 	  'smartassH3' - a "smart" governor
+
+	  If in doubt, say N.
+
+config CPU_FREQ_GOV_WHEATLEY
+	tristate "'wheatley' cpufreq governor"
+	depends on CPU_FREQ
+	help
+	  'wheatley' based on ondemand governor.
 
 	  If in doubt, say N.
 
