@@ -2816,37 +2816,11 @@ static int tapan_volatile(struct snd_soc_codec *ssc, unsigned int reg)
 }
 
 #define TAPAN_FORMATS (SNDRV_PCM_FMTBIT_S16_LE)
-#ifndef CONFIG_SOUND_CONTROL_HAX_GPL
-static
-#endif
-int tapan_write(struct snd_soc_codec *codec, unsigned int reg,
-	unsigned int value)
-{
-	int ret;
-
-	if (reg == SND_SOC_NOPM)
-		return 0;
-
-	BUG_ON(reg > TAPAN_MAX_REGISTER);
-
-	if (!tapan_volatile(codec, reg)) {
-		ret = snd_soc_cache_write(codec, reg, value);
-		if (ret != 0)
-			dev_err(codec->dev, "Cache write to %x failed: %d\n",
-				reg, ret);
-	}
-
-	return wcd9xxx_reg_write(codec->control_data, reg, value);
-}
-#ifdef CONFIG_SOUND_CONTROL_HAX_GPL
-EXPORT_SYMBOL(tapan_write);
-#endif
-
-#ifndef CONFIG_SOUND_CONTROL_HAX_GPL
+#ifndef CONFIG_SOUND_CONTROL_HAX_3_GPL
 static
 #endif
 unsigned int tapan_read(struct snd_soc_codec *codec,
-				unsigned int reg)
+	unsigned int reg)
 {
 	unsigned int val;
 	int ret;
@@ -2869,8 +2843,48 @@ unsigned int tapan_read(struct snd_soc_codec *codec,
 	val = wcd9xxx_reg_read(codec->control_data, reg);
 	return val;
 }
-#ifdef CONFIG_SOUND_CONTROL_HAX_GPL
+#ifdef CONFIG_SOUND_CONTROL_HAX_3_GPL
 EXPORT_SYMBOL(tapan_read);
+#endif
+
+#ifdef CONFIG_SOUND_CONTROL_HAX_3_GPL
+extern int reg_access(unsigned int);
+#endif
+
+#ifndef CONFIG_SOUND_CONTROL_HAX_3_GPL
+static
+#endif
+int tapan_write(struct snd_soc_codec *codec, unsigned int reg,
+				unsigned int value)
+{
+	int ret;
+#ifdef CONFIG_SOUND_CONTROL_HAX_3_GPL
+	int val;
+#endif
+	if (reg == SND_SOC_NOPM)
+		return 0;
+
+	BUG_ON(reg > TAPAN_MAX_REGISTER);
+
+	if (!tapan_volatile(codec, reg)) {
+		ret = snd_soc_cache_write(codec, reg, value);
+		if (ret != 0)
+			dev_err(codec->dev, "Cache write to %x failed: %d\n",
+				reg, ret);
+	}
+
+#ifdef CONFIG_SOUND_CONTROL_HAX_3_GPL
+	if (!reg_access(reg))
+		val = wcd9xxx_reg_read_safe(codec->control_data, reg);
+	else
+		val = value;
+	return wcd9xxx_reg_write(codec->control_data, reg, val);
+#else
+	return wcd9xxx_reg_write(codec->control_data, reg, value);
+#endif
+}
+#ifdef CONFIG_SOUND_CONTROL_HAX_3_GPL
+EXPORT_SYMBOL(tapan_write);
 #endif
 
 static int tapan_startup(struct snd_pcm_substream *substream,
@@ -4416,7 +4430,7 @@ static void tapan_codec_init_reg(struct snd_soc_codec *codec)
 static struct wcd9xxx_reg_address tapan_reg_address = {
 };
 
-#ifdef CONFIG_SOUND_CONTROL_HAX_GPL
+#ifdef CONFIG_SOUND_CONTROL_HAX_3_GPL
 struct snd_kcontrol_new *gpl_faux_snd_controls_ptr =
 	(struct snd_kcontrol_new *)tapan_snd_controls;
 struct snd_soc_codec *fauxsound_codec_ptr;
@@ -4434,7 +4448,7 @@ static int tapan_codec_probe(struct snd_soc_codec *codec)
 	int i;
 	void *ptr = NULL;
 
-#ifdef CONFIG_SOUND_CONTROL_HAX_GPL
+#ifdef CONFIG_SOUND_CONTROL_HAX_3_GPL
 	pr_info("tapan codec probe...\n");
 	fauxsound_codec_ptr = codec;
 #endif
