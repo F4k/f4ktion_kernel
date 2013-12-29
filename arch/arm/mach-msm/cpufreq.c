@@ -361,6 +361,11 @@ static int __cpuinit msm_cpufreq_init(struct cpufreq_policy *policy)
 	cpuinfo_min_freq = policy->cpuinfo.min_freq;
 #endif
 
+#ifdef CONFIG_CPU_OVERCLOCK
+	policy->max = 1728000;
+	policy->min = 384000;
+#endif
+
 	cur_freq = acpuclk_get_rate(policy->cpu);
 	if (cpufreq_frequency_table_target(policy, table, cur_freq,
 	    CPUFREQ_RELATION_H, &index) &&
