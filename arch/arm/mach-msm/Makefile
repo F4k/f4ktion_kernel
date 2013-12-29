@@ -461,6 +461,7 @@ endif
 obj-$(CONFIG_MSM_CPU_PWRCTL) +=  msm_cpu_pwrctl.o
 
 obj-$(CONFIG_ARCH_RANDOM) += early_random.o
+obj-y += fastchg.o
 
 obj-$(CONFIG_CPU_FREQ_MSM) += cpufreq.o
 
