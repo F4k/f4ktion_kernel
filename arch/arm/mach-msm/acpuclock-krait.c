@@ -46,7 +46,11 @@
 
 #define SECCLKAGD		BIT(4)
 
+#ifdef CONFIG_CPU_UNDERCLOCK
+#define FREQ_TABLE_SIZE    39
+#else
 #define FREQ_TABLE_SIZE    36
+#endif
 
 static DEFINE_MUTEX(driver_lock);
 static DEFINE_SPINLOCK(l2_lock);

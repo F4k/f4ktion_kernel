@@ -1978,6 +1978,12 @@ config CPU_OVERCLOCK
 	help
 	  Krait overclocking up to 2.0 GHz
 
+config CPU_UNDERCLOCK
+	bool "Enable extra low CPU clocks"
+	default n
+	help
+	  Extra low cpu frequencies enabled for CPU
+
 config MSM_AVS_HW
 	bool "Enable Adaptive Voltage Scaling (AVS)"
 	default n
