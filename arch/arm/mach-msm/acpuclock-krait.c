@@ -46,10 +46,18 @@
 
 #define SECCLKAGD		BIT(4)
 
+#ifdef CONFIG_CPU_OVERCLOCK
+#ifdef CONFIG_CPU_UNDERCLOCK
+#define FREQ_TABLE_SIZE    44
+#else
+#define FREQ_TABLE_SIZE    39
+#endif
+#else
 #ifdef CONFIG_CPU_UNDERCLOCK
 #define FREQ_TABLE_SIZE    39
 #else
-#define FREQ_TABLE_SIZE    36
+#define FREQ_TABLE_SIZE    35
+#endif
 #endif
 
 static DEFINE_MUTEX(driver_lock);
