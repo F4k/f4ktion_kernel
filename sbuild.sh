@@ -28,7 +28,9 @@ F4K_VER=$BASE_F4K_VER$VER
 
 export LOCALVERSION="-"`echo $F4K_VER`
 #export CROSS_COMPILE=/opt/toolchains/gcc-linaro-arm-linux-gnueabihf-4.7-2013.04-20130415_linux/bin/arm-linux-gnueabihf-
-export CROSS_COMPILE=/opt/toolchains/gcc-linaro-arm-linux-gnueabihf-4.8-2013.10_linux/bin/arm-linux-gnueabihf-
+#export CROSS_COMPILE=/opt/toolchains/gcc-linaro-arm-linux-gnueabihf-4.8-2013.10_linux/bin/arm-linux-gnueabihf-
+export CROSS_COMPILE=/opt/toolchains/gcc-4.8/bin/arm-eabi-
+#export CROSS_COMPILE=/home/f4k/CM11/prebuilts/gcc/linux-x86/arm/arm-eabi-4.7/bin/arm-eabi-
 export ARCH=arm
 export KBUILD_BUILD_USER=f4k
 export KBUILD_BUILD_HOST="mint16x64"
@@ -45,14 +47,24 @@ INIT_DIR=$HOME_DIR/ramdisks/$VARIANT
 MODULES_DIR=$HOME_DIR/filesdir/$VARIANT/lib/modules
 KERNEL_DIR=`pwd`
 OUTPUT_DIR=$HOME_DIR/output/
-CWM_DIR=$HOME_DIR/filesdir/cwm/
+CWM_DIR=$HOME_DIR/filesdir/cwm
 CWM_ANY_DIR=$HOME_DIR/filesdir/cwm_any/
 
 echo
-echo "Remove old kernels"
-rm $CWM_DIR/boot.img
-rm $CWM_ANY_DIR/zImage
-rm arch/arm/boot/zImage
+echo "Removing old kernels files"
+if [ -e $KERNEL_DIR/arch/arm/boot/zImage ]; then
+	rm $CWM_DIR/boot.img
+	rm $CWM_ANY_DIR/zImage
+	rm arch/arm/boot/zImage
+else
+	echo "No old kernels found"
+fi
+
+echo
+echo "Removing old modules"
+rm `find $KERNEL_DIR -name '*.ko'`
+rm `echo $MODULES_DIR"/*"`
+rm `echo $CWM_DIR/system/lib/modules/"*.ko"`
 
 echo
 echo "LOCALVERSION="$LOCALVERSION
@@ -75,9 +87,8 @@ cd $KERNEL_DIR
 make -j4 > /dev/null
 
 echo
-rm `echo $MODULES_DIR"/*"`
 find $KERNEL_DIR -name '*.ko' -exec cp -v {} $MODULES_DIR \;
-find $MODULES_DIR -name '*.ko' -exec cp -v {} $CWM_DIR"system/lib/modules/" \;
+find $MODULES_DIR -name '*.ko' -exec cp -v {} $CWM_DIR"/system/lib/modules/" \;
 cd $KERNEL_DIR
 
 echo
