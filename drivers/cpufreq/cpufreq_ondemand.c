@@ -887,9 +887,6 @@ static void dbs_check_cpu(struct cpu_dbs_info_s *this_dbs_info)
 		return;
 	}
 
-#endif
-
-#if 0
 	if (num_online_cpus() > 1) {
 
 		if (max_load_other_cpu >
@@ -932,7 +929,7 @@ static void dbs_check_cpu(struct cpu_dbs_info_s *this_dbs_info)
 
 		if (freq_next < policy->min)
 			freq_next = policy->min;
-#if 0
+
 		if (num_online_cpus() > 1) {
 			if (max_load_other_cpu >
 			(dbs_tuners_ins.up_threshold_multi_core -
@@ -1379,7 +1376,7 @@ static int cpufreq_governor_dbs(struct cpufreq_policy *policy,
 		this_dbs_info->cur_policy = NULL;
 		if (!cpu)
 			input_unregister_handler(&dbs_input_handler);
-		if (!dbs_enable)
+		if (!dbs_enable) {
 			sysfs_remove_group(cpufreq_global_kobject,
 					   &dbs_attr_group);
 			atomic_notifier_chain_unregister(
