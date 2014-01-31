@@ -95,4 +95,4 @@ ifeq ($(TIMA_ENABLED),1)
 obj-y += ktest/
 obj-$(CONFIG_TIMA_LOG)		+= tima_debug_log.o
 endif
-obj-$(CONFIG_GENERIC_BLN)  += bln.o
+obj-$(CONFIG_GENERIC_BLN)	+= bln.o
