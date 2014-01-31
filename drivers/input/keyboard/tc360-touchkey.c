@@ -1584,47 +1584,45 @@ static struct attribute_group fac_attr_group = {
 #endif
 
 #ifdef CONFIG_GENERIC_BLN
-
 struct tc360_data *bln_tc360_data;
 
 static int tc360_enable_touchkey_bln(int led_mask)
 {
-        i2c_smbus_write_byte_data(bln_tc360_data->client, TC360_CMD, TC360_CMD_LED_ON);
+	i2c_smbus_write_byte_data(bln_tc360_data->client, TC360_CMD, TC360_CMD_LED_ON);
 
-        return 0;
+	return 0;
 }
 
 static int tc360_disable_touchkey_bln(int led_mask)
 {
-        i2c_smbus_write_byte_data(bln_tc360_data->client, TC360_CMD, TC360_CMD_LED_OFF);
+	i2c_smbus_write_byte_data(bln_tc360_data->client, TC360_CMD, TC360_CMD_LED_OFF);
 
-        return 0;
+	return 0;
 }
-
 
 static int tc360_power_on(void)
 {
-        bln_tc360_data->pdata->power(true);
-        msleep(TC360_POWERON_DELAY);
-        bln_tc360_data->pdata->led_power(true);
+	bln_tc360_data->pdata->power(true);
+	msleep(TC360_POWERON_DELAY);
+	bln_tc360_data->pdata->led_power(true);
 
-        return 0;
+	return 0;
 }
 
 static int tc360_power_off(void)
 {
-        bln_tc360_data->pdata->led_power(false);
-        bln_tc360_data->pdata->power(false);
+	bln_tc360_data->pdata->led_power(false);
+	bln_tc360_data->pdata->power(false);
 
-        return 0;
+	return 0;
 }
 
 static struct bln_implementation tc360_touchkey_bln = {
-        .enable = tc360_enable_touchkey_bln,
-        .disable = tc360_disable_touchkey_bln,
-        .power_on = tc360_power_on,
-        .power_off = tc360_power_off,
-        .led_count = 1
+	.enable = tc360_enable_touchkey_bln,
+	.disable = tc360_disable_touchkey_bln,
+	.power_on = tc360_power_on,
+	.power_off = tc360_power_off,
+	.led_count = 1
 };
 #endif
 
@@ -1858,8 +1856,8 @@ static int __devinit tc360_probe(struct i2c_client *client,
 	}
 
 #ifdef CONFIG_GENERIC_BLN
-        bln_tc360_data = data;
-        register_bln_implementation(&tc360_touchkey_bln);
+	bln_tc360_data = data;
+	register_bln_implementation(&tc360_touchkey_bln);
 #endif
 
 	dev_info(&client->dev, "successfully probed.\n");
