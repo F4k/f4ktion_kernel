@@ -51,7 +51,7 @@ CWM_ANY_DIR=../filesdir/cwm_any
 
 echo
 if [ "$2" = "jb" ] ; then
-        cd $HOME_DIR/ramdisks/ && git checkout jb-4.3
+        cd $INIT_DIR && git checkout jb-4.3
 fi
 
 cd $KERNEL_DIR
@@ -63,7 +63,7 @@ if [ -e $KERNEL_DIR/arch/arm/boot/zImage ]; then
 	rm $CWM_ANY_DIR/zImage
 	rm arch/arm/boot/zImage
 else
-	echo "No old kernels found"
+	echo "No kernels found"
 fi
 
 echo
@@ -116,7 +116,7 @@ fi;
 
 echo
 if [ "$2" = "jb" ] ; then
-        cd $HOME_DIR/ramdisks/ && git checkout kk-4.4
+        cd ../$INIT_DIR && git checkout kk-4.4
 fi
 
 cd $KERNEL_DIR
