@@ -568,10 +568,11 @@ ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS += -Os
 endif
 ifdef CONFIG_CC_OPTIMIZE_DEFAULT
-KBUILD_CFLAGS += -Og
+KBUILD_CFLAGS += -Og $(call cc-disable-warning,maybe-uninitialized,)
 endif
 ifdef CONFIG_CC_OPTIMIZE_MORE
 KBUILD_CFLAGS += -O3 -fmodulo-sched -fmodulo-sched-allow-regmoves -fno-tree-vectorize -fno-inline-functions
+KBUILD_CFLAGS += $(call cc-disable-warning,maybe-uninitialized,)
 endif
 ifdef CONFIG_CC_OPTIMIZE_FAST
 KBUILD_CFLAGS += -Ofast -fmodulo-sched -fmodulo-sched-allow-regmoves -fno-tree-vectorize -fno-inline-functions
