@@ -56,13 +56,9 @@ fi
 
 echo
 echo "Removing old modules"
-if [ -e $KERNEL_DIR/block/test-iosched.ko ]; then
-	rm `find $KERNEL_DIR -name '*.ko'`
-	rm `echo $MODULES_DIR"/*"`
-	rm `echo $CWM_DIR/system/lib/modules/"*.ko"`
-else
-	echo "No modules found"
-fi
+rm -R `find $KERNEL_DIR -name '*.ko'`
+rm `echo $MODULES_DIR"/*"`
+rm `echo $CWM_DIR/system/lib/modules/"*.ko"`
 
 echo
 echo "LOCALVERSION="$LOCALVERSION
