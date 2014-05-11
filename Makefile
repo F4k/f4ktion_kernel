@@ -372,6 +372,9 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common \
 		   -Werror-implicit-function-declaration \
 		   -Wno-format-security \
+		   -Wno-maybe-uninitialized \
+		   -Wno-sizeof-pointer-memaccess \
+		   -Wno-sequence-point \
 		   -fno-delete-null-pointer-checks \
 		   -mtune=cortex-a15 -mfpu=neon-vfpv4 \
 		   -ftree-vectorize
