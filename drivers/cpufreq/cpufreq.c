@@ -513,9 +513,6 @@ static ssize_t store_scaling_governor(struct cpufreq_policy *policy,
 	unsigned int ret;
 	char	str_governor[16];
 	struct cpufreq_policy new_policy;
-	char *envp[3];
-	char buf1[64];
-	char buf2[64];
 
 	ret = cpufreq_get_policy(&new_policy, policy->cpu);
 	if (ret)
