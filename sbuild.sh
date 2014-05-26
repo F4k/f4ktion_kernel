@@ -83,7 +83,7 @@ if [ -e $KERNEL_DIR/arch/arm/boot/zImage ]; then
 	cd $INIT_DIR
 	./mkbootfs $VARIANT| gzip > $CWM_ANY_DIR/ramdisk.gz
 	cd $CWM_ANY_DIR
-	./mkbootimg --cmdline 'console = null androidboot.hardware=qcom user_debug=31 zcache' --kernel zImage --ramdisk ramdisk.gz --base 0x80200000 --pagesize 2048 --ramdisk_offset 0x02000000 --output ../cwm/boot.img
+	./mkbootimg --cmdline 'console = null androidboot.hardware=qcom user_debug=31 zcache androidboot.selinux=permissive' --kernel zImage --ramdisk ramdisk.gz --base 0x80200000 --pagesize 2048 --ramdisk_offset 0x02000000 --output ../cwm/boot.img
 	echo
 	echo "Make zip package"
 	cd ../cwm
