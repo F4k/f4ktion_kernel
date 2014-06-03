@@ -33,7 +33,7 @@ export CROSS_COMPILE=/home/f4k/toolchains/arm-cortex_a15-linux-gnueabihf-linaro_
 #export CROSS_COMPILE=/home/f4k/CM11/prebuilts/gcc/linux-x86/arm/arm-eabi-4.7/bin/arm-eabi-
 export ARCH=arm
 export KBUILD_BUILD_USER=f4k
-export KBUILD_BUILD_HOST="mint16x64"
+export KBUILD_BUILD_HOST="mint17x64"
 
 echo 
 echo "Making f4ktion_defconfig"
