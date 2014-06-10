@@ -1,0 +1,57 @@
+Project name: f4ktion_kernel
+ f4k - Add changelog.sh credit to @anarkia1976
+ f4k - 1.4.5
+ f4k - drivers: mmc: activate crc. kernel: sched: change latency to 4ms.
+ Thomas Gleixner - futex: Make lookup_pi_state more robust
+ Thomas Gleixner - futex: Always cleanup owner tid in unlock_pi
+ Thomas Gleixner - futex: Validate atomic acquisition in futex_lock_pi_atomic()
+ Thomas Gleixner - futex-prevent-requeue-pi-on-same-futex.patch futex: Forbid uaddr == uaddr2 in futex_requeue(..., requeue_pi=1)
+ Thomas Gleixner - futex: Add another early deadlock detection check
+ Thomas Gleixner - futex: Prevent attaching to kernel threads
+ f4k - mm: slab: sync code with Linux Kernel 3.8.x
+ f4k - sbuild: update hostname.
+ Raymond Golo (intersectRaven) - sched: LOAD_FREQ (4*HZ+61) avoids loadavg Moire. From http://ripke.com/loadavg/moire.
+ Arne Coucheron - block: bfq: Squashed update from BFQ-v7r3 to BFQ-v7r4
+ Arne Coucheron - wlan: prima: Sync with kk_2.7-stable
+ Aviral Gupta - ASoC: qdsp6v2: fix the audio record failure
+ Vishnuvardhan Prodduturi - msm: msm_fb: set dma pan info when continuous splash is enabled.
+ Hareesh Gundu - msm: kgsl: Enable protected register mode for A2XX
+ Jordan Crouse - msm: kgsl: Mark the IOMMU setstate memory as read only
+ Jordan Crouse - msm: kgsl: Protect CP_STATE_DEBUG_INDEX
+ Jordan Crouse - msm: kgsl: Print the register that causes a protected mode error
+ Jordan Crouse - msm: kgsl: Protect SMMU registers from being written by the GPU
+ Jordan Crouse - msm: kgsl: Enable protected register mode for A3XX
+ Shubhraprakash Das - msm: kgsl: Setup a3xx protection in its start function
+ Mihir Shete - wcnss: add API to check if wcnss is undergoing an SSR
+ Yue Ma - wcnss: Log debug registers when receives certain notification
+ Chintan Pandya - ksm: Provide support to use deferred timers for scanner thread
+ Arne Coucheron - wlan: prima: Sync with kk_2.7-stable
+ Nirmal Abraham - msm: msm_fb: Handle out of order msm_fb ioctls
+ Shreyas Nagasandra Chandrasekhar - audio: Change to set the USB switch state correctly
+ Ravi Joshi - msm: Create shadow files under /sys/kernel/ipv4
+ f4k - Makefile: Add option for LTO Optimization Link Time Optimization (LTO) gives GCC the capability of dumping its internal representation (GIMPLE) to disk, so that all the different compilation units that make up a single executable can be optimized as a single module. This expands the scope of inter-procedural optimizations to encompass the whole program (or, rather, everything that is visible at link time). More about LTO can be found here: https://gcc.gnu.org/wiki/LinkTimeOptimization
+ f4k - Add Graphite Optimization
+ Zhen Kong - qseecom: Validate pointer offset in qseecom_send_modfd_cmd
+ f4k - msm: slimbus: initial overclocking of slimbus
+ f4k - bam_dmux: Use power efficient workqueues for delayed timeouts There is no need to use a normal per-CPU workqueue for delayed power downs as they're not timing or performance critical and waking up a core for them would defeat some of the point.
+ Tk-Glitch - ext4: speed up truncate/unlink by not using bforget() unless needed
+ f4k - msm: gpu: add optimizations cflags plus -O3 to drivers.
+ barome - Update to latest F2FS
+ f4k - defconfig: Enable f2fs filesystem support.
+ Paul Reioux - f2fs: data: AIO optimization compatibility fixup
+ dennes544 - FS: import F2FS
+ f4k - sbuild: Set selinux to permisive via cmdline.
+ f4k - sbuild: update toolchain to 2014.05
+ f4k - drivers: cpuidle: sync
+ Peter Hurley - n_tty: Fix n_tty_write crash when echoing in raw mode
+ Arne Coucheron - block: bfq: Squashed update from BFQ-v7r2 to BFQ-v7r3
+ Arne Coucheron - wlan: prima: Sync with kk_2.7-stable
+ f4k - Linux 3.4.91
+ f4k - Linux 3.4.90
+ f4k - Fix some warnings when compiling with gcc 4.8.x/4.9.x
+ f4k - Test some optimizations.
+ f4k - Makefile: add support for gcc 4.9.x
+ f4k - kernel: Fix all leaks and cleanup
+ f4k - msm: kgsl: add Francisco Franco's Interactive GPU governor.
+ f4k - Enable pipe flag.
+
