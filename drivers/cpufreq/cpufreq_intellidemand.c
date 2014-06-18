@@ -1746,6 +1746,7 @@ static void dbs_input_event(struct input_handle *handle, unsigned int type,
 static int input_dev_filter(const char *input_dev_name)
 {
 	if (strstr(input_dev_name, "touchscreen") ||
+		strstr(input_dev_name, "mxts_msm8930") ||
 		strstr(input_dev_name, "sec_touchscreen") ||
 		strstr(input_dev_name, "-keypad") ||
 		strstr(input_dev_name, "-nav") ||
