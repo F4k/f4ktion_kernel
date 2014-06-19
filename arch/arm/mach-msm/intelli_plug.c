@@ -279,32 +279,6 @@ static void __cpuinit intelli_plug_work_fn(struct work_struct *work)
 				pr_info("case 2: %u\n", persist_count);
 #endif
 				break;
-			case 3:
-				persist_count = TRI_CORE_PERSISTENCE;
-				if (!decision)
-					persist_count = TRI_CORE_PERSISTENCE / CPU_DOWN_FACTOR;
-				if (nr_cpus < 3) {
-					for (i = 1; i < cpu_count; i++)
-						cpu_up(i);
-				} else {
-					for (i = 3; i > 2; i--)
-						cpu_down(i);
-				}
-#ifdef DEBUG_INTELLI_PLUG
-				pr_info("case 3: %u\n", persist_count);
-#endif
-				break;
-			case 4:
-				persist_count = QUAD_CORE_PERSISTENCE;
-				if (!decision)
-					persist_count = QUAD_CORE_PERSISTENCE / CPU_DOWN_FACTOR;
-				if (nr_cpus < 4)
-					for (i = 1; i < cpu_count; i++)
-						cpu_up(i);
-#ifdef DEBUG_INTELLI_PLUG
-				pr_info("case 4: %u\n", persist_count);
-#endif
-				break;
 			default:
 				pr_err("Run Stat Error: Bad value %u\n", nr_run_stat);
 				break;
@@ -395,7 +369,7 @@ static void __cpuinit intelli_plug_resume(void)
 
 	/* wake up everyone */
 	if (eco_mode_active)
-		num_of_active_cores = 2;
+		num_of_active_cores = 1;
 	else
 		num_of_active_cores = num_possible_cpus();
 
