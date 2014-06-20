@@ -464,7 +464,6 @@ obj-$(CONFIG_ARCH_RANDOM) += early_random.o
 obj-y += fastchg.o
 
 obj-$(CONFIG_CPU_FREQ_MSM) += cpufreq.o
-obj-$(CONFIG_INTELLI_PLUG) += intelli_plug.o
 
 ifdef CONFIG_SEC_THERMISTOR
 obj-$(CONFIG_SEC_THERMISTOR) += sec_thermistor.o
