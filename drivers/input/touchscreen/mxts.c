@@ -82,6 +82,9 @@ static int mxt_read_mem(struct mxt_data *data, u16 reg, u8 len, void *buf)
 		return 0;
 #endif
 
+#ifdef CONFIG_MACH_GOLDEN_VZW 
+	err_retry:
+#endif
 		for (i = 0; i < 3 ; i++) {
 			ret = i2c_transfer(data->client->adapter, msg, 2);
 			
@@ -92,6 +95,21 @@ static int mxt_read_mem(struct mxt_data *data, u16 reg, u8 len, void *buf)
 				break;
 		}
 	
+#ifdef CONFIG_MACH_GOLDEN_VZW
+		if (ret < 0 && retry < MAX_RETRY) {
+			data->pdata->power_off(); 
+			msleep(10); 
+			data->pdata->power_on(); 
+	
+			mxt_wait_for_chg(data, MXT_HW_RESET_TIME);
+	
+			dev_err(&data->client->dev, "i2c trasfer failed 3 times. so executed H/W reset \n"); 
+			retry++;
+	
+			goto err_retry;
+		}
+#endif
+
 
 	if (ret == 2)
 		return 0;

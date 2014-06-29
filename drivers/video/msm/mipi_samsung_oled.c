@@ -284,14 +284,14 @@ static int find_mtp(struct msm_fb_data_type *mfd, char * mtp)
 
 	int correct_mtp;
 
-	pr_info("first time mpt read\n");
+	pr_info("first time mtp read\n");
 	read_reg(MTP_REGISTER, mtp_size, first_mtp, FALSE, mfd);
 
-	pr_info("second time mpt read\n");
+	pr_info("second time mtp read\n");
 	read_reg(MTP_REGISTER, mtp_size, second_mtp, FALSE, mfd);
 
 	if (memcmp(first_mtp, second_mtp, mtp_size) != 0) {
-		pr_info("third time mpt read\n");
+		pr_info("third time mtp read\n");
 		read_reg(MTP_REGISTER, mtp_size, third_mtp, FALSE, mfd);
 
 		if (memcmp(first_mtp, third_mtp, mtp_size) == 0) {
@@ -964,7 +964,13 @@ static int mipi_samsung_disp_on(struct platform_device *pdev)
 	if (!boot_on){
 		mipi_samsung_disp_send_cmd(mfd, MTP_READ_ENABLE, false);
 #ifdef USE_READ_ID
+		down(&mfd->dma->mutex);
+		msleep(20);
+		mipi_set_tx_power_mode(0);
+		mipi_dsi_cmd_bta_sw_trigger();
 		msd.mpd->manufacture_id = mipi_samsung_manufacture_id(mfd);
+		mipi_set_tx_power_mode(1);
+		up(&mfd->dma->mutex);
 #endif
 	}
 	if (!msd.dstat.is_smart_dim_loaded) {
@@ -973,7 +979,13 @@ static int mipi_samsung_disp_on(struct platform_device *pdev)
 		char *mtp_data = (char *)&(msd.mpd->smart_s6e63m0.MTP);
 
 		for (err_cnt = 0; err_cnt < 10; err_cnt++) {
+			down(&mfd->dma->mutex);
+			msleep(20);
+			mipi_set_tx_power_mode(0);
+			mipi_dsi_cmd_bta_sw_trigger();
 			mtp_cnt = find_mtp(mfd, mtp_data);
+			mipi_set_tx_power_mode(1);
+			up(&mfd->dma->mutex);
 
 			if (mtp_cnt != 0)
 				break;
@@ -1010,6 +1022,10 @@ static int mipi_samsung_disp_on(struct platform_device *pdev)
 		first_on = false;
 		return 0;
 	}
+
+#ifdef CONFIG_FB_MDP4_ENHANCE
+	is_negativeMode_on();
+#endif
 
 	mipi_samsung_disp_send_cmd(mfd, PANEL_READY_TO_ON, false);
 	if (mipi->mode == DSI_VIDEO_MODE)
@@ -1359,6 +1375,20 @@ static ssize_t mipi_samsung_disp_lcdtype_show(struct device *dev,
 	return strnlen(buf, 20);
 }
 
+static ssize_t mipi_samsung_disp_windowtype_show(struct device *dev,
+		struct device_attribute *attr, char *buf)
+{
+	char temp[15];
+	int id1, id2, id3;
+	id1 = (msd.mpd->manufacture_id & 0x00FF0000) >> 16;
+	id2 = (msd.mpd->manufacture_id & 0x0000FF00) >> 8;
+	id3 = msd.mpd->manufacture_id & 0xFF;
+
+	snprintf(temp, sizeof(temp), "%x %x %x\n",	id1, id2, id3);
+	strlcat(buf, temp, 15);
+	return strnlen(buf, 15);
+}
+
 static ssize_t mipi_samsung_disp_gamma_mode_show(struct device *dev,
 			struct device_attribute *attr, char *buf)
 {
@@ -1702,6 +1732,10 @@ static DEVICE_ATTR(lcd_power, S_IRUGO | S_IWUSR,
 			mipi_samsung_disp_set_power);
 #endif
 static DEVICE_ATTR(lcd_type, S_IRUGO, mipi_samsung_disp_lcdtype_show, NULL);
+ 
+static DEVICE_ATTR(window_type, S_IRUGO,
+			mipi_samsung_disp_windowtype_show, NULL);
+
 static DEVICE_ATTR(gamma_mode, S_IRUGO | S_IWUSR | S_IWGRP,
 			mipi_samsung_disp_gamma_mode_show,
 			mipi_samsung_disp_gamma_mode_store);
@@ -1933,7 +1967,6 @@ static ssize_t tuning_store(struct device *dev,
 
 static DEVICE_ATTR(tuning, 0664, tuning_show, tuning_store);
 #endif
-
 #if defined(CONFIG_ESD_ERR_FG_RECOVERY)
 static irqreturn_t err_fg_irq_handler(int irq, void *handle)
 {
@@ -1946,16 +1979,26 @@ static irqreturn_t err_fg_irq_handler(int irq, void *handle)
 }
 static void err_fg_work_func(struct work_struct *work)
 {
+	int bl_backup;
 	struct msm_fb_data_type *mfd;
 	mfd = platform_get_drvdata(msd.msm_pdev);
+
+	bl_backup = mfd->bl_level;
 
 	pr_info("%s : start", __func__);
 	err_fg_working = 1;
 	esd_recovery();
 	esd_count++;
 	err_fg_working = 0;
-	
+
+	mdelay(50);
+
+	/* brightness off */
+	mfd->bl_level = 0;
+	mipi_samsung_disp_backlight(mfd);
+
 	/* Restore brightness */
+	mfd->bl_level = bl_backup;
 	mipi_samsung_disp_backlight(mfd);
 
 	pr_info("%s : end", __func__);
@@ -1968,7 +2011,7 @@ static ssize_t mipi_samsung_esd_check_show(struct device *dev,
 {
 	int rc;
 
-	rc = snprintf((char *)buf, 20, "esd count : %d\n", esd_count);
+	rc = snprintf((char *)buf, 20, "esd count \n");
 
 	return rc;
 }
@@ -2037,6 +2080,9 @@ static int __devinit mipi_samsung_disp_probe(struct platform_device *pdev)
 	gpio_tlmm_config(GPIO_CFG(GPIO_ERR_FG,  0, GPIO_CFG_INPUT,
 					GPIO_CFG_PULL_DOWN, GPIO_CFG_2MA),GPIO_CFG_ENABLE);
 
+	gpio_tlmm_config(GPIO_CFG(GPIO_ESD_VGH_DET,  0, GPIO_CFG_INPUT,
+					GPIO_CFG_NO_PULL, GPIO_CFG_2MA),GPIO_CFG_ENABLE);
+
 	ret = request_threaded_irq(err_fg_gpio, NULL, err_fg_irq_handler, 
 		IRQF_TRIGGER_HIGH | IRQF_ONESHOT, "esd_detect", NULL);
 	if (ret) {
@@ -2067,6 +2113,13 @@ static int __devinit mipi_samsung_disp_probe(struct platform_device *pdev)
 				dev_attr_lcd_power.attr.name);
 	}
 #endif
+
+	ret = sysfs_create_file(&lcd_device->dev.kobj,
+			&dev_attr_window_type.attr);
+	if (ret) {
+		pr_info("sysfs create fail-%s\n",
+				dev_attr_window_type.attr.name);
+	}
 
 	ret = sysfs_create_file(&lcd_device->dev.kobj,
 					&dev_attr_lcd_type.attr);

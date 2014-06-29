@@ -2998,7 +2998,6 @@ int smart_dimming_init(struct SMART_DIM *psmart)
 		psmart->gen_table[lux_loop].lux = psmart->plux_table[lux_loop];
 
 #if defined(AID_OPERATION)
-
 #ifdef CONFIG_FB_MSM_MIPI_AMS367_OLED_VIDEO_WVGA_PT_PANEL
 		gamma_init_AMS367AV(psmart, (char *)(&(psmart->gen_table[lux_loop].gamma_setting)), GAMMA_SET_MAX);
 #else /* CONFIG_FB_MSM_MIPI_AMS367_OLED_VIDEO_WVGA_PT_PANEL */
@@ -3017,28 +3016,12 @@ int smart_dimming_init(struct SMART_DIM *psmart)
 			(char *)(&(psmart->gen_table[lux_loop].gamma_setting)),
 			GAMMA_SET_MAX);
 #endif /* CONFIG_FB_MSM_MIPI_AMS367_OLED_VIDEO_WVGA_PT_PANEL */
-
-#if 1 /*temp: making mtp offset values like J's*/
-		if (id3 == 0x00 || id3 == 0x01 || id3 == 0x02){
-			psmart->gen_table[lux_loop].gamma_setting[30] = 0x02;
-			psmart->gen_table[lux_loop].gamma_setting[31] = 0x03;
-			psmart->gen_table[lux_loop].gamma_setting[32] = 0x02;
-		}
-#endif
-#else
+#else /* #if defined(AID_OPERATION) */
 		pure_gamma_init(psmart,
 			(char *)(&(psmart->gen_table[lux_loop].gamma_setting)),
 			GAMMA_SET_MAX);
-#endif
+#endif /* #if defined(AID_OPERATION) */
 	}
-
-#if 1 /*temp: making mtp offset values like J's*/
-	if (id3 == 0x00 || id3 == 0x01 || id3 == 0x02){
-		max_lux_table[30] = 0x02;
-		max_lux_table[31] = 0x03;
-		max_lux_table[32] = 0x02;
-	}
-#endif
 
 	/* set 300CD max gamma table */
 	memcpy(&(psmart->gen_table[lux_loop-1].gamma_setting),
