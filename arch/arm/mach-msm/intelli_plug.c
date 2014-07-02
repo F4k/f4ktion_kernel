@@ -23,9 +23,9 @@
 #include <linux/input.h>
 #include <linux/cpufreq.h>
 
-#include <linux/module.h>
-#include <linux/kobject.h>
-#include <linux/sysfs.h>
+#if CONFIG_POWERSUSPEND
+#include <linux/powersuspend.h>
+#endif
 
 //#define DEBUG_INTELLI_PLUG
 #undef DEBUG_INTELLI_PLUG
@@ -78,8 +78,6 @@ static DEFINE_PER_CPU(struct ip_cpu_info, ip_info);
 
 static unsigned int screen_off_max = UINT_MAX;
 module_param(screen_off_max, uint, 0644);
-
-static int sleep_active = 0;
 
 #define NR_FSHIFT	3
 static unsigned int nr_fshift = NR_FSHIFT;
@@ -279,6 +277,32 @@ static void __cpuinit intelli_plug_work_fn(struct work_struct *work)
 				pr_info("case 2: %u\n", persist_count);
 #endif
 				break;
+			case 3:
+				persist_count = TRI_CORE_PERSISTENCE;
+				if (!decision)
+					persist_count = TRI_CORE_PERSISTENCE / CPU_DOWN_FACTOR;
+				if (nr_cpus < 3) {
+					for (i = 1; i < cpu_count; i++)
+						cpu_up(i);
+				} else {
+					for (i = 3; i > 2; i--)
+						cpu_down(i);
+				}
+#ifdef DEBUG_INTELLI_PLUG
+				pr_info("case 3: %u\n", persist_count);
+#endif
+				break;
+			case 4:
+				persist_count = QUAD_CORE_PERSISTENCE;
+				if (!decision)
+					persist_count = QUAD_CORE_PERSISTENCE / CPU_DOWN_FACTOR;
+				if (nr_cpus < 4)
+					for (i = 1; i < cpu_count; i++)
+						cpu_up(i);
+#ifdef DEBUG_INTELLI_PLUG
+				pr_info("case 4: %u\n", persist_count);
+#endif
+				break;
 			default:
 				pr_err("Run Stat Error: Bad value %u\n", nr_run_stat);
 				break;
@@ -293,6 +317,7 @@ static void __cpuinit intelli_plug_work_fn(struct work_struct *work)
 		msecs_to_jiffies(sampling_time));
 }
 
+#ifdef CONFIG_POWERSUSPEND
 static void screen_off_limit(bool on)
 {
 	unsigned int i, ret;
@@ -322,7 +347,7 @@ static void screen_off_limit(bool on)
 	}
 }
 
-static void intelli_plug_suspend(void)
+static void intelli_plug_suspend(struct power_suspend *handler)
 {
 	int i;
 	int num_of_active_cores = num_possible_cpus();
@@ -356,7 +381,7 @@ static void wakeup_boost(void)
 	}
 }
 
-static void __cpuinit intelli_plug_resume(void)
+static void __cpuinit intelli_plug_resume(struct power_suspend *handler)
 {
 	int num_of_active_cores;
 	int i;
@@ -369,7 +394,7 @@ static void __cpuinit intelli_plug_resume(void)
 
 	/* wake up everyone */
 	if (eco_mode_active)
-		num_of_active_cores = 1;
+		num_of_active_cores = 2;
 	else
 		num_of_active_cores = num_possible_cpus();
 
@@ -384,49 +409,11 @@ static void __cpuinit intelli_plug_resume(void)
 		msecs_to_jiffies(10));
 }
 
-static ssize_t __cpuinit sleep_active_store(struct kobject *kobj,
-                struct kobj_attribute *attr, const char *buf, size_t count)
-{
-	int input = 0;
-
-	sscanf(buf, "%d", &input);
-
-	if (input == 0) {
-		if (sleep_active == 1) {
-			intelli_plug_resume();
-			sleep_active = 0;
-		}
-	} else {
-		if (sleep_active == 0) {
-			intelli_plug_suspend();
-			sleep_active = 1;
-		}
-	}
-	return 0;
-}
-
-static ssize_t sleep_active_show(struct kobject *kobj,
-                                struct kobj_attribute *attr, char *buf)
-{
-	return sprintf(buf, "%d", sleep_active);
-}
-
-static struct kobj_attribute sleep_active_attribute_driver = 
-	__ATTR(sleep_active_status, 0666,
-		sleep_active_show, sleep_active_store);
-
-static struct attribute *sleep_active_attrs[] =
-        {
-                &sleep_active_attribute_driver.attr,
-                NULL,
-        };
-
-static struct attribute_group sleep_active_attr_group =
-        {
-                .attrs = sleep_active_attrs,
-        };
-
-static struct kobject *sleep_active_kobj;
+static struct power_suspend intelli_plug_power_suspend_driver = {
+	.suspend = intelli_plug_suspend,
+	.resume = intelli_plug_resume,
+};
+#endif  /* CONFIG_POWERSUSPEND */
 
 static void intelli_plug_input_event(struct input_handle *handle,
 		unsigned int type, unsigned int code, int value)
@@ -506,32 +493,15 @@ int __init intelli_plug_init(void)
 {
 	int rc;
 
-	/* We want all CPUs to do sampling nearly on same jiffy */
-	int sysfs_result;
-
-	sleep_active_kobj =
-		kobject_create_and_add("intelliplug", kernel_kobj);
-
-        if (!sleep_active_kobj) {
-                pr_err("%s intelliplug create failed!\n",
-                        __FUNCTION__);
-                return -ENOMEM;
-        }
-
-        sysfs_result = sysfs_create_group(sleep_active_kobj,
-                        &sleep_active_attr_group);
-
-        if (sysfs_result) {
-                pr_info("%s sysfs create failed!\n", __FUNCTION__);
-                kobject_put(sleep_active_kobj);
-        }
-
 	//pr_info("intelli_plug: scheduler delay is: %d\n", delay);
 	pr_info("intelli_plug: version %d.%d by faux123\n",
 		 INTELLI_PLUG_MAJOR_VERSION,
 		 INTELLI_PLUG_MINOR_VERSION);
 
 	rc = input_register_handler(&intelli_plug_input_handler);
+#ifdef CONFIG_POWERSUSPEND
+	register_power_suspend(&intelli_plug_power_suspend_driver);
+#endif
 
 	intelliplug_wq = alloc_workqueue("intelliplug",
 				WQ_HIGHPRI | WQ_UNBOUND, 1);
