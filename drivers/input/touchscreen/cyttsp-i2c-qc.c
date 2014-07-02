@@ -1039,18 +1039,20 @@ static void cyttsp_xy_handler(struct cyttsp *ts, bool is_ready_to_suspend)
 			mode */
 			/* reset TTSP Device back to bootloader mode */
 			host_reg = CY_SOFT_RESET_MODE;
-			retval = i2c_smbus_write_i2c_block_data(ts->client,
+				retval = i2c_smbus_write_i2c_block_data(
+					ts->client,
 					CY_REG_BASE,
 					sizeof(host_reg), &host_reg);
 			/* wait for TTSP Device to complete reset back to
 			bootloader */
-			tries = 0;
-			do {
+				tries = 0;
+				do {
 				usleep_range(1000, 1000);
 				cyttsp_putbl(ts, 1, false, false, false);
 			} while (g_bl_data.bl_status != 0x10 &&
 				g_bl_data.bl_status != 0x11 &&
-				tries++ < 100);
+					g_bl_data.bl_status) &&
+					tries++ < 100);
 			retval = cyttsp_putbl(ts, 1, true, true, true);
 			/* switch back to operational mode */
 			/* take TTSP device out of bootloader mode;
