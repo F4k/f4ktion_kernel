@@ -73,7 +73,8 @@ retry:
 		einode = f2fs_iget(inode->i_sb, le32_to_cpu(de->ino));
 		if (IS_ERR(einode)) {
 			WARN_ON(1);
-			if (PTR_ERR(einode) == -ENOENT)
+			err = PTR_ERR(einode);
+			if (err == -ENOENT)
 				err = -EEXIST;
 			goto out_unmap_put;
 		}
@@ -299,10 +300,7 @@ static int do_recover_data(struct f2fs_sb_info *sbi, struct inode *inode,
 		goto out;
 
 	start = start_bidx_of_node(ofs_of_node(page), fi);
-	if (IS_INODE(page))
-		end = start + ADDRS_PER_INODE(fi);
-	else
-		end = start + ADDRS_PER_BLOCK;
+	end = start + ADDRS_PER_PAGE(page, fi);
 
 	f2fs_lock_op(sbi);
 
