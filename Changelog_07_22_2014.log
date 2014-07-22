@@ -1,0 +1,66 @@
+Project name: f4ktion_kernel
+ f4k - cpufreq: revert this from ML2 merge.
+ f4k - sbuild: update Linaro toolchain to 2014.07
+ f4k - F2FS: Upstream update.
+ Andrew Ruder - fs/super.c: sync ro remount after blocking writers
+ f4k - Linux 3.4.99
+ Arne Coucheron - wlan: prima: Sync with kk_2.7_rb1.41
+ Pavankumar Kondeti - USB: msm_otg: Fix a bug in charger detection procedure
+ Sujeet Kumar - USB: msm_otg: Fix host mode suspend bug
+ Arne Coucheron - nl80211: Remove stray void nl80211_ft_event
+ Arne Coucheron - msm8930: display: Use Samsung's bandwidth values from kk kernel
+ Arne Coucheron - Revert "msm: display: command mode panel release fence"
+ Arne Coucheron - Revert "msm: mdp: Change msmfb kworker to kthread"
+ Arne Coucheron - Revert "msm: mdp: Update sync pt. behaviour"
+ f4k - Linux 3.4.98
+ f4k - Linux 3.4.97
+ Saravana Kannan - msm: cpufreq: Ensure cpufreq change happens on corresponding CPU
+ Matt Wagantall - msm: cpufreq: Relax constraints on "msm-cpufreq" workqueue
+ Mahesh Sivasubramanian - msm: cpufreq: Configure WQ for higer priority
+ Jennifer Liu - msm: cpufreq: Always update frequency limits when core is online
+ Praveen Chidambaram - msm: cpufreq: Initialize cpufreq driver early at boot
+ Deepak Katragadda - msm: cpufreq: Only apply driver limits for scaling_min/max_freq writes
+ Srivatsa Vaddagiri - cpufreq: Retain only online cpus in managed_policy->cpus
+ Tanya Brokhman - block: row: Fix crash when adding a new field in bio struct
+ Asutosh Das - mmc: core: invoke low power mode if card is not present
+ Kevin Liu - mmc: core: enhance card removal judgement for slow removal
+ f4k - Revert "USB: gadget: rndis: Optimize tx path for better performance"
+ Arne Coucheron - block: bfq: Squashed update from BFQ-v7r4 to BFQ-v7r5
+ f4k - Linux 3.4.96
+ Dave Daynard - Undo Samsung brain-damage to subsystem restart driver
+ f4k - Merge with ML2 kernel source (part 2)
+ f4k - Linux 3.4.95
+ Joe Perches - fs: convert use of typedef ctl_table to struct ctl_table
+ f4k - defconfig: enable SPEEDUP_KEYRESUME
+ yank555-lu - earlysuspend: speedup late resume (faster wakeup of the device)
+ f4k - mxts: sync with ML2 source code.
+ f4k - defconfig: Disable CONFIG_SEC_DVFS
+ Arne Coucheron - init: Support power off charging on kitkat bootloader
+ Arne Coucheron - wlan: prima: Sync with kk_2.7-stable
+ Neil Leeder - msm: arm: make nohlt readable
+ Ming Lei - scripts/kallsyms: filter symbols not in kernel address space
+ Prakash Kamliya - msm: kgsl: Fix spinlock recursion in destroy pagetable
+ Jeff Boody - msm: kgsl: prevent kgsl_get_pagetable from returning a destroyed pt
+ Jordan Crouse - msm: kgsl: Look up the process struct in process_mem_open()
+ Jeremy Gebben - msm: kgsl: hold a process_private refcount in process_mem_print
+ Paul Reioux - intelli_plug: fix logic error for eco mode profiles
+ Paul Reioux - intelli_plug: fix thread capacity threshold calculation
+ Paul Reioux - intelli_plug: adjust thread capacity for Cortex A7 SOCs
+ Paul Reioux - intelli_plug: unify powersuspend and earlysuspend drivers
+ Paul Reioux - intelli_plug: move to its own directory. It's been cross platform for a while
+ Paul Reioux - intelli_plug: post 3.5 tweaks and code clean up
+ Paul Reioux - intelli_plug: add eco-extreme profile for more dual core use options
+ Paul Reioux - intelli_plug: deprecate eco mode. replaced by built-in profile
+ Paul Reioux - intelli_plug: add automatic dual-core initializations
+ Paul Reioux - intelli_plug: misc minor code fixup post 3.4 update
+ Paul Reioux - intelli_plug: add nr_running_thresholds based on thread capacity of SOC type
+ Paul Reioux - intelli_plug: remove legacy msm_rq based code
+ Paul Reioux - intelli_plug: tweak cpu_nr_running threshold
+ Paul Reioux - intelli_plug: allow cpu_nr_running_threshold to be user adjustable
+ Paul Reioux - intelli_plug: use per cpu nr_runnings stats for unplugging cores
+ Paul Reioux - Intelli_plug: kernel sched/core: add per cpu nr_running stats
+ Paul Reioux - intelli_plug: add profiles support and misc code optimization
+ Paul Reioux - intelli_plug: refactor stats calculation code to be less intrusive
+ f4k - Squashed revert commits of scheduler.
+ f4k - intelli_plug: sync code.
+
