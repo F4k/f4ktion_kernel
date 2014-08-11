@@ -8,6 +8,11 @@ case "$1" in
             VER=""
             ;;
 
+        eur_3gds)
+            VARIANT="eur_3gds"
+            VER=""
+            ;;
+
         eur_lte)
             VARIANT="eur_lte"
             VER=""
