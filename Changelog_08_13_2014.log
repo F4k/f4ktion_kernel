@@ -1,0 +1,39 @@
+Project name: f4ktion_kernel
+ f4k - Linux 3.4.103
+ f4k - Add S4 Mini Duos variant.
+ f4k - Linux 3.4.102
+ Avijit Kanti Das - net: Zeroing the structure ethtool_wolinfo in ethtool_get_wol()
+ Subash Abhinov Kasiviswanathan - msm_bam_rmnet: Fix potential memory corruption
+ Peter Hurley - n_tty: Fix n_tty_write crash when echoing in raw mode
+ Ashok Raj Deenadayalan - msm: camera: Propogate vpe subdev init error
+ Gaurav Gagrani - msm: kgsl: Don't hold the refernce to the process private in kgsl create context
+ Shubhraprakash Das - msm: kgsl: Increase the timeout value for fault detection
+ Arve Hjønnevåg - Staging: android: binder: More offset validation.
+ Jordan Crouse - msm: kgsl: Force the ME off before reading the microcode
+ Arne Coucheron - wlan: prima: Sync with kk_2.7_rb1.42
+ Swetha Chikkaboraiah - cpufreq: cpu-boost: Use interruptible wait to not affect load average
+ Ameya Thakur - msm: mdm: Changes to implement notifications from the mdm-driver
+ Taniya Das - msm: mdm2: Decrease leakage before QSC power-up
+ Joel King - msm: mdm: change where ssr_count is decremented
+ Ameya Thakur - msm: mdm: Disable panic on external mdm boot timeout
+ Ameya Thakur - msm: mdm: Ignore modem crashes during image upgrade.
+ Venkat Devarasetty - msm: spm: set vdd directly for current cpu
+ Venkat Gopalakrishnan - mmc: msm_sdcc: Remove unnecessary delay in interrupt context
+ Dave Martin - ARM: 7583/1: decompressor: Enable unaligned memory access for v6 and above
+ f4k - defconfig: Enable RC input drivers.
+ Paul Reioux - intellidemand: cumulative updateis to version 5.5
+ Paul Reioux - intelli_plug: older Qualcomm kernel compatibility fixup
+ Paul Reioux - intelli_plug: use primary CPU's info data for non-boot cpu's settings
+ Paul Reioux - intelli_plug: initialize ip_info struct element during driver init
+ Paul Reioux - intelli_plug: fix incorrect cpufreq API usage
+ Paul Reioux - intelli_plug: only apply suspend/resume logic if active
+ Paul Reioux - Sound Control: separate locking mechanism for recording and playback
+ Paul Reioux - Sound Control: let register lock be dependent on different hw revisions
+ Paul Reioux - Sound Control: Misc clean up for newer WCD9xxx SOCs
+ Paul Reioux - Sound Control: expose direct register manipulations to userspace
+ f4k - Linux 3.4.101
+ f4k - Linux 3.4.100
+ f4k - mach-msm: set BUS to 4800
+ f4k - Remove TIMA trash, we don't use KNOX.
+ f4k - gpu: compile using -Ofast.
+
