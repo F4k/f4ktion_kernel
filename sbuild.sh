@@ -73,7 +73,7 @@ echo "OUTPUT_DIR="$OUTPUT_DIR
 echo "CWM_DIR="$CWM_DIR
 echo "CWN_ANY_DIR="$CWM_ANY_DIR
 
-make -j4 > /dev/null
+make -j16 > /dev/null
 
 echo
 find $KERNEL_DIR -name '*.ko' -exec cp -v {} $MODULES_DIR \;
