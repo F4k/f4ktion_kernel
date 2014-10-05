@@ -1,0 +1,34 @@
+Project name: f4ktion_kernel
+ f4k - sbuild: update toolchain to 2014.09
+ f4k - Linux 3.4.104
+ f4k - sbuild: I have more power now :D
+ Konstantin Dorfman - mmc: core: continue to wait, when unblocked by signal
+ Sujit Reddy Thumma - mmc: core: fix block request queue hang during data crc errors
+ Konstantin Dorfman - mmc: queue: do not clean current request when urgent in progress
+ Konstantin Dorfman - mmc: core: do not reinsert prepeared FUA and FLUSH requests in stop flow
+ Maya Erez - mmc: core: increase timeout for disable cache operation
+ Maya Erez - mmc: block: flush request requeue after timeout.
+ Maya Erez - mmc: print an error on FLUSH timeout
+ Subhash Jadavani - mmc: msm_sdcc: enable asynchronous interrupt support in 4-bit mode
+ Subhash Jadavani - mmc: sdio: enable asynchronous interrupt support in 4-bit mode
+ Maya Erez - Revert "Revert "mmc: core: handle flush requests timeout""
+ Arne Coucheron - drivers: a2220: Fix compile error
+ Arne Coucheron - wlan: prima: Sync with kk_2.7_rb1.43
+ Zhen Kong - qseecom: fix an issue related to search app when unloading an app
+ Zhen Kong - qseecom: Add support to handle multiple app load & unload
+ AnilKumar Chimata - qseecom: Fix issues with failure to release client handle
+ Zhen Kong - qseecom: Fix issue with incomplete command exiting prematurely
+ Hariprasad Dhalinarasimha - qseecom: Unload the app upon receiving qseecom_release.
+ Nicholas Bellinger - target/rd: Refactor rd_build_device_space + rd_release_device_space
+ Kees Cook - vsprintf: ignore %n again
+ Tetsuo Handa - seq_file: introduce seq_setwidth() and seq_pad()
+ Tetsuo Handa - seq_file: remove "%n" usage from seq_file users
+ Praveen Chavan - msm: vidc: cache-flush encoder output buffers after alloc
+ f4k - sbuild: update Linaro toolchain to 4.9.2 2014.08
+ f4k - defconfig: Enable CONFIG_MSM_IPC_ROUTER_SECURITY * Needed for updated blobs
+ Roman Birg - serrano: report SW_LID instead of SW_FLIP
+ Arne Coucheron - Revert "n_tty: Fix n_tty_write crash when echoing in raw mode"
+ Arne Coucheron - Revert "Staging: android: binder: More offset validation."
+ Arne Coucheron - fs: exFAT: Update to v1.2.9
+ f4k - Revert "mm: Added filesystem dynamic read-ahead"
+
