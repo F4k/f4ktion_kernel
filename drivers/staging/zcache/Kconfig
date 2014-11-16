@@ -12,3 +12,11 @@ config ZCACHE
 	  compression and an in-kernel implementation of transcendent
 	  memory to store clean page cache pages and swap in RAM,
 	  providing a noticeable reduction in disk I/O.
+
+config ZCACHE_LZ4_COMPRESS
+	bool "Enable LZ4 algorithm support"
+	depends on ZCACHE
+	select CRYPTO_LZ4
+	default n
+	help
+	  This option enables LZ4 compression algorithm support.

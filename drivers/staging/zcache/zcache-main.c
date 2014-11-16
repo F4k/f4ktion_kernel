@@ -58,6 +58,13 @@
 #define MAX_CLIENTS 16
 #define LOCAL_CLIENT ((uint16_t)-1)
 
+#ifdef CONFIG_ZCACHE_LZ4_COMPRESS
+static const char *default_compressor = "lz4";
+#else
+static const char *default_compressor = "lzo";
+#endif
+
+
 MODULE_LICENSE("GPL");
 
 struct zcache_client {
@@ -1993,7 +2000,7 @@ static int zcache_comp_init(void)
 					zcache_comp_name);
 	}
 	if (!ret)
-		strcpy(zcache_comp_name, "lzo");
+		strcpy(zcache_comp_name, default_compressor);
 	ret = crypto_has_comp(zcache_comp_name, 0, 0);
 	if (!ret) {
 		ret = 1;
