@@ -474,10 +474,17 @@ wpt_status wpalWriteRegister
    if (NULL == gpEnv || wcnss_device_is_shutdown() ||
         (vos_is_logp_in_progress(VOS_MODULE_ID_WDI, NULL) &&
             !vos_is_reinit_in_progress(VOS_MODULE_ID_WDI, NULL))) {
-      WPAL_TRACE(eWLAN_MODULE_DAL_DATA, eWLAN_PAL_TRACE_LEVEL_ERROR,
-                 "%s: invoked before subsystem initialized",
-                 __func__);
-      return eWLAN_PAL_STATUS_E_INVAL;
+       /* Ratelimit wpalReadRegister failure messages which
+        * can flood serial console during improper system
+        * initialization or wcnss_device in shutdown state.
+        * wpalRegisterInterrupt() call to wpalReadRegister is
+        * likely to cause flooding. */
+       if (__ratelimit(&wpalReadRegister_rs)) {
+           WPAL_TRACE(eWLAN_MODULE_DAL_DATA, eWLAN_PAL_TRACE_LEVEL_ERROR,
+                   "%s: invoked before subsystem initialized",
+                   __func__);
+       }
+       return eWLAN_PAL_STATUS_E_INVAL;
    }
 
    if ((address < gpEnv->wcnss_memory->start) ||
