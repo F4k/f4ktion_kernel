@@ -874,6 +874,13 @@ config GENERIC_BLN_USE_WAKELOCK
 	help
 	  Say Y here use the wakelock implementation of the BLN driver
 
+config GAMMA_CONTROL
+	bool "Gamma Control for OLED"
+	depends on FB_MSM_MIPI_DSI_SAMSUNG_OLED
+	default y
+	help
+	  This adds full support for shifting RGB panel colors.
+
 source "drivers/misc/c2port/Kconfig"
 source "drivers/misc/eeprom/Kconfig"
 source "drivers/misc/cb710/Kconfig"

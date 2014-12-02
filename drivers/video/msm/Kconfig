@@ -262,6 +262,7 @@ config FB_MSM_MIPI_DSI_ORISE
 config FB_MSM_MIPI_DSI_SAMSUNG_OLED
 	bool
 	select FB_MSM_MIPI_DSI
+	select GAMMA_CONTROL
 	default n
 
 
