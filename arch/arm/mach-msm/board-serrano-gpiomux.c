@@ -353,6 +353,20 @@ static struct msm_gpiomux_config nc_configs[] __initdata = {
 #ifdef CONFIG_MACH_SERRANO_EUR_3G
 static struct msm_gpiomux_config nc_configs[] __initdata = {
 	{
+		.gpio = 38,
+		.settings = {
+			[GPIOMUX_SUSPENDED] = &nc_cfg,
+			[GPIOMUX_ACTIVE] = &nc_cfg,
+		},
+	},
+	{
+		.gpio = 39,
+		.settings = {
+			[GPIOMUX_SUSPENDED] = &nc_cfg,
+			[GPIOMUX_ACTIVE] = &nc_cfg,
+		},
+	},
+	{
 		.gpio = 40,
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &nc_cfg,
@@ -1410,7 +1424,6 @@ int __init msm8930_init_gpiomux(void)
 	msm_gpiomux_install(msm8930_leds_configs,
 			ARRAY_SIZE(msm8930_leds_configs));
 #endif
-
 #if defined(CONFIG_MACH_CRATER)
 	msm_gpiomux_install(msm8930_sd_det_config,
 			ARRAY_SIZE(msm8930_sd_det_config));
