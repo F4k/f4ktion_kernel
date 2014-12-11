@@ -30,7 +30,7 @@ export LOCALVERSION="-"`echo $F4K_VER`
 export CROSS_COMPILE=/home/f4k/toolchains/arm-cortex_a15-linux-gnueabihf-linaro_4.9.3-2014.11/bin/arm-cortex_a15-linux-gnueabihf-
 export ARCH=arm
 export KBUILD_BUILD_USER=f4k
-export KBUILD_BUILD_HOST="mint17x64"
+export KBUILD_BUILD_HOST="mint17.1x64"
 
 echo 
 echo "Making f4ktion_defconfig"
