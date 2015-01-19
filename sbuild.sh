@@ -27,7 +27,7 @@ BASE_F4K_VER=$BASE_F4K_VER-$VARIANT
 F4K_VER=$BASE_F4K_VER$VER
 
 export LOCALVERSION="-"`echo $F4K_VER`
-export CROSS_COMPILE=/home/f4k/toolchains/arm-cortex_a15-linux-gnueabihf-linaro_4.9.3-2014.12/bin/arm-cortex_a15-linux-gnueabihf-
+export CROSS_COMPILE=/home/f4k/toolchains/arm-cortex_a15-linux-gnueabihf-linaro_4.9.3-2015.01/bin/arm-cortex_a15-linux-gnueabihf-
 export ARCH=arm
 export KBUILD_BUILD_USER=f4k
 export KBUILD_BUILD_HOST="mint17.1x64"
