@@ -154,6 +154,7 @@ enum zone_stat_item {
 	NR_UKSM_ZERO_PAGES,
 #endif
 	NR_FREE_CMA_PAGES,
+	NR_SWAPCACHE,
 	NR_VM_ZONE_STAT_ITEMS };
 
 /*

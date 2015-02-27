@@ -726,6 +726,7 @@ const char * const vmstat_text[] = {
 	"nr_uksm_zero_pages",
 #endif
 	"nr_free_cma",
+	"nr_swapcache",
 	"nr_dirty_threshold",
 	"nr_dirty_background_threshold",
 
