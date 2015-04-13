@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BASE_F4K_VER="f4ktion_lp_2.1.7"
+BASE_F4K_VER="f4ktion_lp_2.2.0"
 
 case "$1" in
         eur_3g)
