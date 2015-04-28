@@ -50,7 +50,7 @@ struct device *stored_dev;
  * command sequence so stop waiting for it to be idle.
  */
 #define INIT_UDELAY		200
-#define MAX_UDELAY
+#define MAX_UDELAY		2000
 
 struct clk_pair {
 	const char *name;
@@ -546,7 +546,7 @@ static int kgsl_pwrctrl_idle_timer_store(struct device *dev,
 	struct kgsl_device *device = kgsl_device_from_dev(dev);
 	struct kgsl_pwrctrl *pwr;
 	const long div = 1000/HZ;
-	int rc
+	int rc;
 
 	if (device == NULL)
 		return 0;
@@ -581,7 +581,6 @@ static int kgsl_pwrctrl_idle_timer_show(struct device *dev,
 	return snprintf(buf, PAGE_SIZE, "%d\n",
 		device->pwrctrl.interval_timeout * mul);
 }
-
 
 static int kgsl_pwrctrl_pmqos_latency_store(struct device *dev,
 					struct device_attribute *attr,
