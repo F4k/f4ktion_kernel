@@ -37,7 +37,7 @@ echo "Making f4ktion_defconfig"
 
 DATE_START=$(date +"%s")
 
-make VARIANT_DEFCONFIG=msm8930_serrano_$VARIANT"_defconfig" SELINUX_DEFCONFIG=selinux_defconfig f4ktion_defconfig
+make VARIANT_DEFCONFIG=msm8930_serrano_$VARIANT"_defconfig" f4ktion_defconfig
 
 INIT_DIR=../ramdisks_lp
 MODULES_DIR=../filesdir/$VARIANT/lib/modules
